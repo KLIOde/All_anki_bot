@@ -67,3 +67,12 @@ def create_read_anki(WAITING_FOR_FILENAME, WAITING_FOR_FILE, pattern, button_han
         per_user=True,
     )
     app.add_handler(buton)
+    
+def create_read_send_voice(name_file, pattern, button_handler, handle_file, apli):
+    buton = ConversationHandler(
+        entry_points=[CallbackQueryHandler(button_handler, pattern=pattern)],
+        states={name_file: [MessageHandler(filters.VOICE & ~filters.COMMAND, handle_file)]},
+        fallbacks=[CommandHandler("cancel", cancel)],
+        per_user=True,
+    )
+    apli.add_handler(buton)

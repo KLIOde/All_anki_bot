@@ -5,7 +5,7 @@ from telegram.ext import (
     CommandHandler,
 
 )
-from buttons import state, anki, gpt, phi, phi_js, phi_py, phi_dialogue, phi_listening
+from buttons import state, anki, gpt, phi, phi_js, phi_py, phi_dialogue, phi_listening, phi_speaking
 from utils import button, text
 from commands import start
 
@@ -25,7 +25,7 @@ callback_phi_py="phi_py"
 callback_phi_js="phi_js"
 callback_phi_dialogue="phi_dialogue"
 callback_phi_listening="phi_listening"
-
+callback_phi_speaking="phi_speaking"
 
 
 patter_phi = "^" + callback_phi + "$"
@@ -33,6 +33,7 @@ patter_phi_py = "^" + callback_phi_py + "$"
 patter_phi_js = "^" + callback_phi_js + "$"
 patter_phi_dialogue = "^" + callback_phi_dialogue + "$"
 patter_phi_listening = "^" + callback_phi_listening + "$"
+patter_phi_speaking = "^" + callback_phi_speaking + "$"
 
 def main():
     application = Application.builder().token(TELEGRAM_TOKEN).build()
@@ -95,6 +96,13 @@ def main():
         apli = application
     )
 
+    # button.create_read_send_voice(
+    #     name_file = phi_py.PHI_FILE,
+    #     pattern= patter_phi_speaking,
+    #     button_handler = phi_speaking.phi_speaking_button_handler,
+    #     handle_file=phi_speaking.phi_speaking_handler,
+    #     apli = application
+    # )
     print("Бот запущен... Ожидание сообщений.")
     application.run_polling()
 
