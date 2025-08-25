@@ -96,13 +96,13 @@ def main():
         apli = application
     )
 
-    # button.create_read_send_voice(
-    #     name_file = phi_py.PHI_FILE,
-    #     pattern= patter_phi_speaking,
-    #     button_handler = phi_speaking.phi_speaking_button_handler,
-    #     handle_file=phi_speaking.phi_speaking_handler,
-    #     apli = application
-    # )
+    button.create_read_send_voice(
+        name_file = phi_py.PHI_FILE,
+        pattern= patter_phi_speaking,
+        button_handler = phi_speaking.phi_speaking_button_handler,
+        handle_file=phi_speaking.phi_speaking_handler,
+        apli = application
+    )
     print("Бот запущен... Ожидание сообщений.")
     application.run_polling()
 

@@ -23,6 +23,7 @@ async def phi_button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE)
             InlineKeyboardButton("📤 Слово", callback_data="phi_js"),
             InlineKeyboardButton("📤 Диалог", callback_data="phi_dialogue"),
             InlineKeyboardButton("📤 Слух", callback_data="phi_listening"),
+            InlineKeyboardButton("📤 Говорение", callback_data="phi_speaking"),
         ],
         [
             InlineKeyboardButton("⬅️ Назад", callback_data="main_menu")

@@ -15,19 +15,19 @@ from utils.voice import download_file, recognize_speech
 PHI_FILE = "phi_file"
 logger = logging.getLogger(__name__)
 TELEGRAM_TOKEN = "8134028537:AAEddvqQNy3ovVrxZ49h1LO7rt4CnWiz1FA"
-bot = telebot.TeleBot(TELEGRAM_TOKEN)
+# bot = telebot.TeleBot(TELEGRAM_TOKEN)
 
-@bot.message_handler(content_types=['voice']) #Бот реагирует на голос, поэтому пишем voice
+# @bot.message_handler(content_types=['voice']) #Бот реагирует на голос, поэтому пишем voice
 
 def transcript(message):
 
-    filename = download_file(bot, message.voice.file_id) #Скачиваем голосовуху
+    filename = download_file(message.voice.file_id) #Скачиваем голосовуху
 
     text = recognize_speech(filename) #Преобразуем её в вав-файл + расшифровываем
 
     response = f"🎤 Вот расшифровка вашего голосового сообщения:\n\n{text}" #Форматируем, чтобы на выходе пользователь получил не пустую расшифровку, а хоть какую-то красоту
 
-    bot.send_message(message.chat.id, response) #Отправляем ответ пользователю :)
+    # bot.send_message(message.chat.id, response) #Отправляем ответ пользователю :)
 
 ''' bot.polling() '''
 # Это будет entry_point (когда нажимают кнопку)
