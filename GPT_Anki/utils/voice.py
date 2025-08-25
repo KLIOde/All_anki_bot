@@ -36,18 +36,29 @@ def recognize_speech(ogg_filename):
 
     return text 
 
-def download_file(bot, file_id):
+from telegram import Update
+from telegram.ext import ContextTypes
 
-    file_info = bot.get_file(file_id)
+async def download_voice(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    # Проверяем, есть ли голосовое сообщение
+    if not update.message.voice:
+        await update.message.reply_text("❌ Пожалуйста, отправьте голосовое сообщение.")
+        return
 
-    downloaded_file = bot.download_file(file_info.file_path)
+    # Получаем объект голосового сообщения
+    voice = update.message.voice
 
-    filename = file_id + file_info.file_path
+    # Опционально: можно проверить длительность или формат
+    file_name = f"voice_{voice.file_id}.ogg"  # Telegram использует .ogg для голосовых
+    input_path = f"downloads/{file_name}"
 
-    filename = filename.replace('/','_') #Чтобы ошибок с косой чертой не было бллин
+    # Создаём папку, если её нет
+    import os
+    os.makedirs("downloads", exist_ok=True)
 
-    with open(filename, 'wb') as f:
+    # Получаем файл и скачиваем
+    file = await voice.get_file()
+    await file.download_to_drive(input_path)
 
-        f.write(downloaded_file)
-
-    return filename
+    await update.message.reply_text(f"✅ Голосовое сообщение сохранено как: {input_path}")
+    return input_path
