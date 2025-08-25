@@ -10,7 +10,7 @@ import logging
 from neural_models import phi
 from translate import translate
 import telebot
-from voice import download_file, recognize_speech
+from utils.voice import download_file, recognize_speech
 
 PHI_FILE = "phi_file"
 logger = logging.getLogger(__name__)
