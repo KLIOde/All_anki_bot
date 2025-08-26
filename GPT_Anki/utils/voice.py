@@ -4,13 +4,27 @@ import telebot
 import speech_recognition # Преобразование голоса в текст (базаримся на готовенькое от Гугла)
 from pydub import AudioSegment # Обработка аудиофайла, который присылает пользователь
 
+from pydub import AudioSegment
+import os
+
 def ogg2wav(filename):
+    # Проверка существования файла
+    if not os.path.exists(filename):
+        raise FileNotFoundError(f"Файл не найден: {filename}")
 
-    new_filename = filename.replace('.ogg', '.wav')
+    # Разделяем имя и расширение
+    base, ext = os.path.splitext(filename)
+    if ext.lower() != '.ogg':
+        raise ValueError("Ожидается файл с расширением .ogg")
 
-    audio = AudioSegment.from_file(filename)
+    new_filename = base + '.wav'
 
-    audio.export(new_filename, format='wav')
+    # Загрузка и конвертация
+    try:
+        audio = AudioSegment.from_file(filename, format='ogg')
+        audio.export(new_filename, format='wav')
+    except Exception as e:
+        raise RuntimeError(f"Ошибка при конвертации: {e}")
 
     return new_filename
 
