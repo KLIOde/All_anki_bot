@@ -29,9 +29,7 @@ async def phi_speaking_button_handler(update: Update, context: ContextTypes.DEFA
 async def phi_speaking_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     filename = await download_voice(update, context) #Скачиваем голосовуху
-    print('OK 1')
     text = recognize_speech(filename) #Преобразуем её в вав-файл + расшифровываем
-    print('OK 2', 'text = ', text)
     response = f"🎤 Вот расшифровка вашего голосового сообщения:\n\n{text}" #Форматируем, чтобы на выходе пользователь получил не пустую расшифровку, а хоть какую-то красоту
     await update.message.reply_text(response)
     # bot.send_message(message.chat.id, response) #Отправляем ответ пользователю :)
