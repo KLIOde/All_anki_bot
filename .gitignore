@@ -23,4 +23,7 @@
 /Wireless LAN_Intel_22.180.0.4_W11x64_A.zip
 /Расчетный листок (Для печати).pdf
 /Яндекс Музыка.lnk
+__pycache__/
 *.pyc
+*.pyo
+*.pyd
