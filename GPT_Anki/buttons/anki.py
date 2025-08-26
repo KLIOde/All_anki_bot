@@ -12,7 +12,6 @@ ASKING_FILE = "anki_file"
 logger = logging.getLogger(__name__)
 
 
-
 # Anki Conversation
 async def anki_button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
@@ -94,11 +93,11 @@ async def handle_anki_file(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     # Скачиваем
     input_path = await load(update, context)    
-
+    print(input_path)
     try:
         # Вызываем saving
-        output_file_path = save.saving(how='anki', res_name=Voc)
-
+        output_file_path = save.saving(how='anki', res_name=Voc, file=input_path)
+        print('OK')
         # Проверяем, что файл создан
         await error_create_file(output_file_path, update, context)
 

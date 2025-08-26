@@ -21,13 +21,27 @@ def escape_markdown_v2(text: str) -> str:
     # Экранируем каждый из них через \
     return re.sub(f'([{re.escape(escape_chars)}])', r'\\\1', text)
 
-def split_en_ru(s):
-    match = re.match(r'^\s*(.+?)\s*[-–]\s*([а-яА-ЯёЁ].*)$', s.strip())
+def split_en_ru(text):
+    # Удаляем возможные разделители
+    cleaned = re.sub(r'[-—]', ' ', text).strip()
+    parts = cleaned.split()
     
-    if match:
-        eng = match.group(1).strip()  # Всё до тире
-        rus = match.group(2).strip()  # Всё после тире, начиная с кириллицы
-        return eng, rus
+    # Разделяем на английские и русские части
+    eng_parts = []
+    rus_parts = []
+    
+    for part in parts:
+        if re.search(r'[a-zA-Z]', part):
+            eng_parts.append(part)
+        elif re.search(r'[а-яёА-ЯЁ]', part):
+            rus_parts.append(part)
+    
+    a = ' '.join(eng_parts)
+    b = ' '.join(rus_parts)
+    
+    return a, b
+
+
 
 async def print_text(generated_words, update: Update, context: ContextTypes.DEFAULT_TYPE):
     eng_tg, rus_tg, eng_py, rus_py = translate.trans_res(generated_words)
@@ -37,3 +51,12 @@ async def print_text(generated_words, update: Update, context: ContextTypes.DEFA
 
 def pattern(word):
     return "^" + word + "$"
+
+def ecran(line):
+    result = ''
+    for i in line:
+        if i not in '()\{\}[]':
+            result += i
+        else:
+            result+= '\\' + i
+    return result
