@@ -4,17 +4,17 @@ from utils import text
 
 def open_file(file_path):
     try:
-        file_path = file_path
         with open(file_path, 'r', encoding='utf-8') as f:
                 res = {}
                 for line in f:
                     line = line.strip()
-                    if not line or '-' not in line and '–' not in line:
-                        continue
-                    # Поддержка разных тире: - или –
-                    print(line)
-                    eng, rus = text.split_en_ru(line)
-                    res[eng] = rus
+                    if line != '':
+                        try:
+                            eng, rus = text.split_en_ru(line)
+                            res[eng] = rus
+                        except (ValueError, TypeError):
+                            print(line)
+                            continue
         return res
     except Exception as e:
         print(f"Ошибка чтения файла: {e}")
@@ -67,7 +67,7 @@ def create_anki(res_name, res):
     # Сохраняем в папку downloads
     output_path = "downloads/Vocabulary.apkg"
     genanki.Package(my_deck).write_to_file(output_path)
-    
+    print('OK')
     print(f"Файл Anki создан: {output_path}")
     return output_path  # Возвращаем полный путь
 
