@@ -28,7 +28,7 @@ async def phi_speaking_button_handler(update: Update, context: ContextTypes.DEFA
 
 async def phi_speaking_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
-    filename = download_voice(update, context) #Скачиваем голосовуху
+    filename = await download_voice(update, context) #Скачиваем голосовуху
 
     text = recognize_speech(filename) #Преобразуем её в вав-файл + расшифровываем
 
