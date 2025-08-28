@@ -25,7 +25,6 @@ def split_en_ru(text):
     # Удаляем возможные разделители
     cleaned = re.sub(r'[-—]', ' ', text).strip()
     parts = cleaned.split()
-    
     # Разделяем на английские и русские части
     eng_parts = []
     rus_parts = []

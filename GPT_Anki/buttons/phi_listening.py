@@ -9,15 +9,15 @@ from utils import send_voise
 import logging
 from neural_models import phi
 from translate import translate
+from buttons import state
 
-PHI_L_FILE = "phi_l_file"
 logger = logging.getLogger(__name__)
 
 async def phi_listening_button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         query = update.callback_query
         await query.answer()
         await query.edit_message_text(text="⌨️ Пожалуйста введите слово:")
-        return PHI_L_FILE
+        return state.State.PHI_L_FILE
 
 async def phi_listening(update: Update, context: ContextTypes.DEFAULT_TYPE):
     generated_words = []
