@@ -8,7 +8,7 @@ from telegram.ext import (
 from commands import anki_command
 from buttons import state, anki, gpt, phi, phi_js, phi_py, phi_dialogue, phi_listening, phi_speaking
 from utils import button, text
-from commands import anki_command, speaking_command, listening_command
+from commands import anki_command, speaking_command, listening_command, gpt_command, phi_command, phi_py_command
 
 
 logging.basicConfig(
@@ -59,6 +59,8 @@ def Start():
         pattern = text.pattern(callback_gpt),
         button_handler  =gpt.gpt_button_handler,
         handle_file = gpt.handle_gpt_file,
+        command_name= gpt_command.command_name,
+        command_func= gpt_command.start_gpt_command,
         apli = application
         )
 
@@ -67,6 +69,8 @@ def Start():
         pattern = patter_phi,
         button_handler  =phi.phi_button_handler,
         handle_file = phi.handle_phi_file,
+        command_name= phi_command.command_name,
+        command_func= phi_command.start_phi_command,
         apli = application
         )
 
@@ -75,6 +79,8 @@ def Start():
         pattern= patter_phi_py,
         button_handler = phi_py.phi_py_handler,
         handle_file=phi.handle_phi_file,
+        command_name= phi_py_command.command_name,
+        command_func= phi_py_command.start_phi_py_command,
         apli = application
     )
 

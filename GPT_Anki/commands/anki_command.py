@@ -13,4 +13,4 @@ async def start_anki_conversation(update: Update, context: ContextTypes.DEFAULT_
         text="📝 Введите НАЗВАНИЕ файла для Anki:",
         parse_mode="Markdown"
     )
-    return state.State_anki.WAITING_FOR_FILENAME
+    return state.State.WAITING_FOR_FILENAME

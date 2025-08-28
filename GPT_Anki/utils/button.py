@@ -33,9 +33,10 @@ async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
         reply_markup=get_main_menu()
     )
     return ConversationHandler.END
-def create_read_file(name_file, pattern, button_handler, handle_file, apli):
+def create_read_file(name_file, pattern, button_handler, handle_file,command_name, command_func, apli):
     buton = ConversationHandler(
-        entry_points=[CallbackQueryHandler(button_handler, pattern=pattern)],
+        entry_points=[CallbackQueryHandler(button_handler, pattern=pattern),
+                      CommandHandler(command_name, command_func) ],
         states={name_file: [MessageHandler(filters.Document.ALL, handle_file)]},
         fallbacks=[CommandHandler("cancel", cancel)],
         per_user=True,
