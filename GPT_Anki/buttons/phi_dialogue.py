@@ -3,19 +3,20 @@ from telegram.ext import (
     ContextTypes,
 )
 import logging
+from buttons import state
 from neural_models import phi
 from utils import text
 from print import typing
 from neural_models import phi
 
-PHI_D_FILE = "phi_d_file"
+
 logger = logging.getLogger(__name__)
 
 async def phi_dialogue_button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         query = update.callback_query
         await query.answer()
         await query.edit_message_text(text="⌨️ Пожалуйста, введите слово для обработки в JS:")
-        return PHI_D_FILE
+        return state.State.PHI_D_FILE
     
 
 async def phi_dialogue_state_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -42,4 +43,4 @@ async def phi_dialogue_state_handler(update: Update, context: ContextTypes.DEFAU
 
     await text.print_text(generated_words, update, context)
         
-    return PHI_D_FILE
+    return state.State.PHI_D_FILE

@@ -3,7 +3,7 @@ from telegram import Update
 from telegram.ext import (
     ContextTypes,
 )
-PHI_FILE = "phi_file"
+from buttons import state
 logger = logging.getLogger(__name__)
 
 async def phi_py_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -14,4 +14,4 @@ async def phi_py_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         parse_mode="Markdown"
     )
     #context.user_data['awaiting_input'] = 'phi_py'
-    return PHI_FILE  # ✅ Переход в состояние ожидания файла
+    return state.State.PHI_FILE  # ✅ Переход в состояние ожидания файла

@@ -8,24 +8,22 @@ from telegram.ext import (
 from utils import button
 from saving import save
 from buttons import state
-ASKING_FILE = "anki_file"
+
 logger = logging.getLogger(__name__)
 
 
 # Anki Conversation
 async def anki_button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    query = update.callback_query
-    await query.answer()
-    
-    # Сначала запрашиваем название файла
-    await query.edit_message_text(
-        text="📝 Введите НАЗВАНИЕ файла для Anki:",
-        parse_mode="Markdown",
-        reply_markup=None
-    )
-    
-    # Устанавливаем состояние ожидания названия файла
-    return state.State_anki.WAITING_FOR_FILENAME
+    # Проверяем, откуда пришёл запрос: кнопка или команда
+    if update.callback_query:
+        query = update.callback_query
+        await query.answer()
+        await query.edit_message_text(
+            text="📝 Введите НАЗВАНИЕ файла для Anki:",
+            parse_mode="Markdown",
+            reply_markup=None
+        )
+    return state.State.WAITING_FOR_FILENAME
 
 async def anki_handle_filename(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # Сохраняем название файла в контексте
@@ -38,7 +36,7 @@ async def anki_handle_filename(update: Update, context: ContextTypes.DEFAULT_TYP
     )
     
     # Переходим в состояние ожидания файла
-    return state.State_anki.WAITING_FOR_FILE
+    return state.State.WAITING_FOR_FILE
 
 # Парсинг
 async def parsing(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -64,12 +62,12 @@ async def send(res_name, output_file_path, update: Update, context: ContextTypes
 async def error_parsing(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not update.message.document:
         await update.message.reply_text("Пожалуйста, отправьте файл как документ.")
-        return ASKING_FILE
+        return state.State.ASKING_FILE
 
 async def error_load(file_name, update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not file_name.endswith(".txt"):
         await update.message.reply_text("❌ Файл должен быть в формате `.txt`.")
-        return ASKING_FILE
+        return state.State.ASKING_FILE
 
 async def error_create_file(output_file_path, update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not os.path.exists(output_file_path):

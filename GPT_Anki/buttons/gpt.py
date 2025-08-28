@@ -10,20 +10,20 @@ from utils import button
 from neural_models import gpt
 # Импорт функций из других модулей
 from utils import prepare_dictionary
-from utils import button
+from buttons import state
 
-GPT_FILE = "gpt_file"
+
 logger = logging.getLogger(__name__)
 
 async def handle_gpt_file(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not update.message.document:
         await update.message.reply_text("Пожалуйста, отправьте файл как документ.")
-        return GPT_FILE
+        return state.State.GPT_FILE
 
     file_name = update.message.document.file_name
     if not file_name.endswith(".apkg"):
         await update.message.reply_text("❌ Файл должен быть в формате `.apkg`.")
-        return GPT_FILE
+        return state.State.GPT_FILE
 
     file = await update.message.document.get_file()
     input_path = "downloads/latest.apkg"

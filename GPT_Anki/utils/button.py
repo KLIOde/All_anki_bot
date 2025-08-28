@@ -5,8 +5,13 @@ from telegram.ext import (
     filters,
     ContextTypes,
     ConversationHandler,
-    Application,
 )
+from telegram.ext import (
+    CommandHandler,
+
+)
+from commands import anki_command
+from commands import start, knopki
 
 from telegram import (
     Update,
@@ -45,9 +50,10 @@ def create_read_text(name_file, pattern, button_handler, handle_file, app):
     )
     app.add_handler(buton)
     
-def create_read_return_voice(name_file, pattern, button_handler, handle_file, apli):
+def create_read_return_voice(name_file, pattern, button_handler, handle_file,command_name, command_func, apli):
     buton = ConversationHandler(
-        entry_points=[CallbackQueryHandler(button_handler, pattern=pattern)],
+        entry_points=[CallbackQueryHandler(button_handler, pattern=pattern),
+                      CommandHandler(command_name, command_func) ],
         states={name_file: [MessageHandler(filters.TEXT & ~filters.COMMAND, handle_file)]},
         fallbacks=[CommandHandler("cancel", cancel)],
         per_user=True,
@@ -56,9 +62,10 @@ def create_read_return_voice(name_file, pattern, button_handler, handle_file, ap
     
     
     
-def create_read_anki(WAITING_FOR_FILENAME, WAITING_FOR_FILE, pattern, button_handler, handle_name_file, handle_get_file, app):
+def create_read_anki(WAITING_FOR_FILENAME, WAITING_FOR_FILE, pattern, button_handler, handle_name_file, handle_get_file, command_name, command_func, app):
     buton = ConversationHandler(
-        entry_points=[CallbackQueryHandler(button_handler, pattern=pattern)],
+        entry_points=[CallbackQueryHandler(button_handler, pattern=pattern),
+                      CommandHandler(command_name, command_func)],
         states={
         WAITING_FOR_FILENAME: [MessageHandler(filters.TEXT & ~filters.COMMAND, handle_name_file)],
         WAITING_FOR_FILE: [MessageHandler(filters.Document.TXT, handle_get_file)],
@@ -68,11 +75,16 @@ def create_read_anki(WAITING_FOR_FILENAME, WAITING_FOR_FILE, pattern, button_han
     )
     app.add_handler(buton)
     
-def create_read_send_voice(name_file, pattern, button_handler, handle_file, apli):
+def create_read_send_voice(name_file, pattern, button_handler, handle_file,command_name, command_func, apli):
     buton = ConversationHandler(
-        entry_points=[CallbackQueryHandler(button_handler, pattern=pattern)],
+        entry_points=[CallbackQueryHandler(button_handler, pattern=pattern),
+                      CommandHandler(command_name, command_func)],
         states={name_file: [MessageHandler(filters.VOICE & ~filters.COMMAND, handle_file)]},
         fallbacks=[CommandHandler("cancel", cancel)],
         per_user=True,
     )
     apli.add_handler(buton)
+    
+def comands(apli):
+    apli.add_handler(CommandHandler("start", start.start))
+    apli.add_handler(CommandHandler("button", knopki.button_command))

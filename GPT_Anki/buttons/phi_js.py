@@ -8,8 +8,8 @@ from neural_models import phi
 from utils import text, button
 from print import typing
 from neural_models import phi
+from buttons import state
 
-PHI_FILE = "phi_file"
 logger = logging.getLogger(__name__)
 
 # Это будет state-обработчик внутри ConversationHandler
@@ -45,4 +45,4 @@ async def phi_js_button_handler(update: Update, context: ContextTypes.DEFAULT_TY
     await query.edit_message_text(text="⌨️ Пожалуйста, введите слово для обработки в JS:")
 
     # Переходим в состояние PHI_FILE
-    return PHI_FILE  # Это имя состояния, которое мы используем в ConversationHandler
+    return state.State.PHI_FILE  # Это имя состояния, которое мы используем в ConversationHandler

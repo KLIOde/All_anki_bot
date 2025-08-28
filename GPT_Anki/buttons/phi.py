@@ -8,8 +8,9 @@ from telegram.ext import (
 from print import typing
 from utils import text, button, prepare_dictionary
 from translate import translate
+from buttons import state
 from neural_models import phi
-PHI_FILE = "phi_file"
+
 logger = logging.getLogger(__name__)
 
 async def phi_button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -40,12 +41,12 @@ async def handle_phi_file(update: Update, context: ContextTypes.DEFAULT_TYPE):
     print("✅ handle_phi_file вызван!")  # Лог
     if not update.message.document:
         await update.message.reply_text("Пожалуйста, отправьте файл как документ.")
-        return PHI_FILE
+        return state.State.PHI_FILE
     await update.message.reply_text("Все заебись")
     file_name = update.message.document.file_name
     if not file_name.endswith(".apkg"):
         await update.message.reply_text("❌ Файл должен быть в формате `.apkg`.")
-        return PHI_FILE
+        return state.State.PHI_FILE
 
     file = await update.message.document.get_file()
     input_path = "downloads/latest.apkg"
