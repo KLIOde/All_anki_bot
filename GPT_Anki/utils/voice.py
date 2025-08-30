@@ -1,9 +1,7 @@
 #Обработка полученного голосового сообщения. 
 import os
-import telebot
-import speech_recognition # Преобразование голоса в текст (базаримся на готовенькое от Гугла)
+import speech_recognition # Преобразование голоса в текст 
 from pydub import AudioSegment # Обработка аудиофайла, который присылает пользователь
-
 from pydub import AudioSegment
 import os
 

@@ -8,17 +8,14 @@ from telegram.ext import (
 )
 from telegram.ext import (
     CommandHandler,
-
 )
-from commands import anki_command
 from commands import start, knopki
-
 from telegram import (
     Update,
     InlineKeyboardButton,
     InlineKeyboardMarkup,
 )
-#from buttons import anki
+
 def get_main_menu():
     keyboard = [
         [InlineKeyboardButton("Anki", callback_data="anki_menu")],  # ✅
@@ -33,6 +30,7 @@ async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
         reply_markup=get_main_menu()
     )
     return ConversationHandler.END
+
 def create_read_file(name_file, pattern, button_handler, handle_file,command_name, command_func, apli):
     buton = ConversationHandler(
         entry_points=[CallbackQueryHandler(button_handler, pattern=pattern),
@@ -42,6 +40,7 @@ def create_read_file(name_file, pattern, button_handler, handle_file,command_nam
         per_user=True,
     )
     apli.add_handler(buton)
+
 def create_read_text(name_file, pattern, button_handler, handle_file, app):
     buton = ConversationHandler(
         entry_points=[CallbackQueryHandler(button_handler, pattern=pattern)],
@@ -60,9 +59,7 @@ def create_read_return_voice(name_file, pattern, button_handler, handle_file,com
         per_user=True,
     )
     apli.add_handler(buton)
-    
-    
-    
+      
 def create_read_anki(WAITING_FOR_FILENAME, WAITING_FOR_FILE, pattern, button_handler, handle_name_file, handle_get_file, command_name, command_func, app):
     buton = ConversationHandler(
         entry_points=[CallbackQueryHandler(button_handler, pattern=pattern),

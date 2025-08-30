@@ -74,9 +74,6 @@ async def error_create_file(output_file_path, update: Update, context: ContextTy
         await update.message.reply_text("❌ Ошибка: файл колоды не был создан.")
         return ConversationHandler.END
 
-
-
-
 async def handle_anki_file(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
     await error_parsing(update, context)
@@ -94,7 +91,8 @@ async def handle_anki_file(update: Update, context: ContextTypes.DEFAULT_TYPE):
     print(input_path)
     try:
         # Вызываем saving
-        output_file_path = save.saving(how='anki', res_name=Voc, file=input_path)
+        S = save.save2apkg(how='anki_parsing', res_name=Voc, file=input_path, id = 'advanced')
+        output_file_path = S.saving()
         print('OK')
         # Проверяем, что файл создан
         await error_create_file(output_file_path, update, context)
