@@ -1,11 +1,8 @@
 import logging
-import os
 from telegram import Update
 from telegram.ext import (
     ContextTypes
 )
-from utils import text, button
-from translate import translate
 
 logger = logging.getLogger(__name__)
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
