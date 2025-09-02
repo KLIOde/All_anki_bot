@@ -50,6 +50,8 @@ async def load(update: Update, context: ContextTypes.DEFAULT_TYPE):
     logger.info(f"Файл сохранён как {input_path}")
     return input_path
 
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Упрости
+
 async def send(res_name, output_file_path, update: Update, context: ContextTypes.DEFAULT_TYPE):
     with open(output_file_path, 'rb') as f:
             await update.message.reply_document(
@@ -91,9 +93,9 @@ async def handle_anki_file(update: Update, context: ContextTypes.DEFAULT_TYPE):
     print(input_path)
     try:
         # Вызываем saving
-        S = save.save2apkg(how='anki_parsing', res_name=Voc, file=input_path, id = 'advanced')
+        S = save.save2apkg(how='anki_lms', res_name=Voc, file=input_path, id = 'new_advanced')
         output_file_path = S.saving()
-        print('OK')
+        print('OK', output_file_path)
         # Проверяем, что файл создан
         await error_create_file(output_file_path, update, context)
 

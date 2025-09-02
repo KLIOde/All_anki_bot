@@ -1,12 +1,13 @@
 import requests
 import os
+import time
 
 def download_sound(url_sound, file_name_douwnload):
     response = requests.get(url_sound)
     response.raise_for_status()
     with open(file_name_douwnload, 'wb') as f:
         f.write(response.content)
-        print('Скачано')
+        print(f'Скачано: {file_name_douwnload}')
 
 def preapre_dounload_sound(word, media_files_list):
     filename = f"downloads/{word.lower()}-us.mp3"
@@ -18,17 +19,32 @@ def preapre_dounload_sound(word, media_files_list):
 def get_request(url, word):
     url = f"https://api.dictionaryapi.dev/api/v2/entries/en/{word}"
     response = requests.get(url)
-    if response:
-        return response.json()
+    while True:  # Цикл повтора
+        response = requests.get(url)
+        
+        if response.status_code == 200:
+            data = response.json()
+            time.sleep(1)  # Задержка между успешными запросами
+            return data
+        
+        elif response.status_code == 429:
+            print(f"Too many requests for '{word}'. Waiting 10 seconds...")
+            time.sleep(10)  # Подождать и повторить
+            continue  # ← Теперь continue работает, потому что мы в while
+        
+        else:
+            time.sleep(1)
+            return None  # Или можно повторять? Зависит от логики
 
 def json_progressing_phonetics(word, x):
     res_phonetics = []
+    audio = ''
     for dict in  x[0]['phonetics']:
             if 'text' in dict and 'audio' in dict and 'sourceUrl' in dict:
-                audio = dict['audio']
-                sourceUrl = dict['sourceUrl']
-                res_phonetics.append(dict)
-                download_sound(audio, f"downloads/{word.lower()}-us.mp3")
+                if audio == '':
+                    audio = dict['audio']
+                    res_phonetics.append(dict)
+                    download_sound(audio, f"downloads/{word.lower()}-us.mp3")
                 
 def json_progressing_meaning(word, x):
     partOfSpeech = ''
@@ -40,7 +56,8 @@ def json_progressing_meaning(word, x):
             partOfSpeech = mean['partOfSpeech']
             antonyms = mean['antonyms']
             synonyms = mean['synonyms']
-            defenition = mean['definitions'][0]['definition']
+            if defenition == '':
+                defenition = mean['definitions'][0]['definition']
             if 'example' in mean['definitions'][0]:
                 examples[word] = (mean['definitions'][0]['example'])  
                 
@@ -57,9 +74,11 @@ def json_progressing_meaning(word, x):
 def parsing_word_from_dictionary(word, media_files_list):
     sound_tag, media_files_list = preapre_dounload_sound(word, media_files_list)
     url = f"https://api.dictionaryapi.dev/api/v2/entries/en/{word}"
-    x = get_request(url, word)
     
-    text = x[0]['phonetic']
+    x = get_request(url, word)
+    text = ''
+    if 'phonetic' in x[0]:
+        text = x[0]['phonetic']
     
     json_progressing_phonetics(word, x)
     

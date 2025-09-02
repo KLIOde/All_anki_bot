@@ -9,7 +9,7 @@ from commands import anki_command
 from buttons import state, anki, gpt, phi, phi_js, phi_py, phi_dialogue, phi_listening, phi_speaking
 from utils import button, text
 from commands import anki_command, speaking_command, listening_command, gpt_command, phi_command, phi_py_command
-
+from saving import save
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -38,11 +38,15 @@ patter_phi_listening = "^" + callback_phi_listening + "$"
 patter_phi_speaking = "^" + callback_phi_speaking + "$"
 
 def Start():
+    
+    S = save.save2apkg()
+    text.delete_all_old_mp3(S.folder)
+    
     application = Application.builder().token(TELEGRAM_TOKEN).build()
     
     button.comands(application)
     
-    button.create_read_anki(
+    button.create_read_File(
         WAITING_FOR_FILENAME = state.State.WAITING_FOR_FILENAME,
         WAITING_FOR_FILE = state.State.WAITING_FOR_FILE,
         pattern = text.pattern(callback_anki),
@@ -74,15 +78,17 @@ def Start():
         apli = application
         )
 
-    button.create_read_file(
-        name_file = state.State.PHI_FILE,
-        pattern= patter_phi_py,
-        button_handler = phi_py.phi_py_handler,
-        handle_file=phi.handle_phi_file,
-        command_name= phi_py_command.command_name,
+    button.create_read_File_py(
+        WAITING_FOR_FILENAME = state.State.PHI_PY_1_FILE,
+        WAITING_FOR_FILE = state.State.PHI_PY_FILE,
+        pattern = text.pattern(callback_phi_py),
+        button_handler  =phi_py.phi_py_1_button_handler,
+        handle_name_file = phi_py.phi_py_2_handler,
+        handle_get_file = phi_py.handle_phi_py_file,
+        command_name = phi_py_command.command_name,
         command_func= phi_py_command.start_phi_py_command,
-        apli = application
-    )
+        app = application
+        )
 
     button.create_read_text(
         name_file = state.State.PHI_FILE,

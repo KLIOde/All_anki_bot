@@ -9,6 +9,8 @@ class State(enum.Enum):
     PHI_D_FILE = "phi_d_file"
     PHI_FILE = "phi_file"
     PHI_S_FILE = "phi_s_file"
+    PHI_PY_FILE = "phi_p_file"
+    PHI_PY_1_FILE = "phi_py_file"
 class version_anki:
     old = 1
     new = 2

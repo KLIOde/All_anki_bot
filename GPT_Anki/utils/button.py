@@ -60,13 +60,26 @@ def create_read_return_voice(name_file, pattern, button_handler, handle_file,com
     )
     apli.add_handler(buton)
       
-def create_read_anki(WAITING_FOR_FILENAME, WAITING_FOR_FILE, pattern, button_handler, handle_name_file, handle_get_file, command_name, command_func, app):
+def create_read_File(WAITING_FOR_FILENAME, WAITING_FOR_FILE, pattern, button_handler, handle_name_file, handle_get_file, command_name, command_func, app):
     buton = ConversationHandler(
         entry_points=[CallbackQueryHandler(button_handler, pattern=pattern),
                       CommandHandler(command_name, command_func)],
         states={
         WAITING_FOR_FILENAME: [MessageHandler(filters.TEXT & ~filters.COMMAND, handle_name_file)],
         WAITING_FOR_FILE: [MessageHandler(filters.Document.TXT, handle_get_file)],
+    },
+        fallbacks=[CommandHandler("cancel", cancel)],
+        per_user=True,
+    )
+    app.add_handler(buton)
+    
+def create_read_File_py(WAITING_FOR_FILENAME, WAITING_FOR_FILE, pattern, button_handler, handle_name_file, handle_get_file, command_name, command_func, app):
+    buton = ConversationHandler(
+        entry_points=[CallbackQueryHandler(button_handler, pattern=pattern),
+                      CommandHandler(command_name, command_func)],
+        states={
+        WAITING_FOR_FILENAME: [MessageHandler(filters.TEXT & ~filters.COMMAND, handle_name_file)],
+        WAITING_FOR_FILE: [MessageHandler(filters.Document.ALL, handle_get_file)],
     },
         fallbacks=[CommandHandler("cancel", cancel)],
         per_user=True,

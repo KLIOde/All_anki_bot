@@ -9,5 +9,8 @@ command_name = 'phi_py'
 
 logger = logging.getLogger(__name__)
 async def start_phi_py_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text(text="⌨️ Скиньте файл в формате .apkg:")
-    return state.State.PHI_FILE
+    await update.message.reply_text(
+        text="📝 Введите НАЗВАНИЕ файла для Anki:",
+        parse_mode="Markdown"
+    )
+    return state.State.PHI_PY_1_FILE
